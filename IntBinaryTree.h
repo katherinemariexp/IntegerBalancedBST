@@ -1,6 +1,11 @@
-#include <iostream>
+#ifndef INTBINARYTREE_H
+#define INTBINARYTREE_H
 
-int main()
-{
-	std::cout << "Hello from AWS Cloud9!" << std::endl;
-}
+#include <iostream>
+using namespace std;
+
+
+
+
+
+#endif

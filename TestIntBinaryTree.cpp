@@ -1,4 +1,17 @@
+//Binary Search Tree
+// Description: Assignment 14 
+// Author: Katherine-Marie Gonzales
+// COMSC200 - 5001
+// May 13, 2019
+// Status: Incomplete - balance not implemented, missing functions 
+
+//TestIntBinaryTree.cpp
 #include<bits/stdc++.h> 
+#include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "IntBinaryTree.h"
 using namespace std;
 
 class Node{
@@ -14,6 +27,8 @@ public:
 class BST {
     Node *root;	
     void display(Node *root);
+    void displayPreorder(Node *root);
+    void displayPostorder(Node *root);
     bool travInOrder(Node *root, vector<int> &record);
     void printInOrder(const Node *p, string lpad, string rpad) const;
 public:
@@ -23,6 +38,8 @@ public:
 	Node *getSuccessor(Node* target);
 	void insert(int id);
 	void display() { display(root); }
+	void displayPreorder() {displayPreorder(root);}
+	void displayPostorder() {displayPreorder(root);}
 	void printInOrder () const { printInOrder(root, " ", " "); }
 	bool travInOrder( vector<int> &record ) {
 	    travInOrder( root, record );
@@ -125,24 +142,41 @@ void BST::insert(int id){
 	}
 }
 
-// traversal only version
-//
-// void BST::display(Node *root){
-// 	if(root){
-// 		display(root->left);
-// 		cout << " " << root->data;
-// 		display(root->right);
-// 	}
-// }
+
+void BST::display(Node *root){
+ 	if(root){
+ 		display(root->left);
+ 		cout << " " << root->data;
+ 		display(root->right);
+ 	}
+
+ }
+ 
+void BST::displayPreorder(Node *root){
+ 	if(root){
+ 		cout << " " << root->data;
+ 		displayPreorder(root->left);
+ 		displayPreorder(root->right);
+ 	}
+
+ }
+ 
+ void BST::displayPostorder(Node *root){
+ 	if(root){
+ 		displayPostorder(root->left);
+ 		displayPostorder(root->right);
+ 		cout << root->data << endl;
+ 	}
+ }
 
 // the cash-back (call-back) version
 //
-void BST::display(Node *root) {
+/*void BST::display(Node *root) {
     vector<int> record;
     travInOrder(record);
     for( auto x:record )
         cout << x << " ";
-}
+}*/
 
 bool BST::travInOrder(Node *p, vector<int> &record){
 	if (p){
@@ -176,64 +210,66 @@ void menu()
     cout << "Q - to Quit" << endl << endl;
 }
 	
+vector<int> getVals(string s, char delim)
+{
+    vector<int> v;
+    string i;
+    stringstream ss(s);
+    while(getline(ss,i,delim))
+    {
+        stringstream c(i);
+        int x;
+        c >> x;
+        v.push_back(x);
+    }
+    return v;
+}
+
+
+
 int main() {
 	BST *b = new BST;
-	vector<int> pattern {8,12,4,6,10,2,1,5,14,15,13,9,11,7,3};//{3,8,1,4,6,2,10,9,20,25,15,16};
+	vector<int> pattern {46,11,3,22,23,64,62,99,58,60,6,8};//{3,8,1,4,6,2,10,9,20,25,15,16};
 	for(auto x:pattern) b->insert(x);
 	char command;
+	string input;
 	
 	menu();
 
 	do{
-		cout << "Enter a command: ";
+		cout << endl << "Enter a command: ";
 		cin >> command;
-
 		
+		cout << endl;
+
 		switch (command)
 		{
-			case 'B':
+			case 'B': cout << "Enter a list of integers separated by a comma (,): ";
+			cin >> input;
+			getVals(input, ',');
+			cout << endl;
 			break;
 			case 'b':
 			break;
 			case 'C': pattern.clear();
 			break;
-			case 'D':
+			case 'D': b->printInOrder(); 
 			break;
-			case '1':
+			case '1': b->displayPreorder();
 			break;
-			case '2':
+			case '2': b->display();
 			break;
-			case '3':
-			break;
-			case '4':
+			case '3': b->displayPostorder();
 			break;
 			case 'm': menu();
 			break;
 			case 'Q': cout << endl; "Goodbye.";
 			break;
 			default: cout << "Please enter a valid option." << endl;
-			
+			break;
 		}
 	}
 	while (command != 'Q');
 
-/*
-	cout << " Original Tree : \n";
-	b->display();		
-    cout << "\n Show the Original Tree in Diagram:\n";
-	b->printInOrder();
-	cout << "\n Check whether Node with value 4 exists : " 
-	     << ( (b->find(4))?"YES":"NO" ) 
-	     << "\n Remove Node with no children (2) : " 
-	     << ( (b->remove(2))?"YES":"NO" ) << endl;		
-	b->display();
-	cout << "\n Remove Node with one child (4) : " 
-	     << ( (b->remove(4))?"YES":"NO" ) << endl;		
-	b->display();
-	cout << "\n Remove Node with Two children (10) : " 
-	     << ( (b->remove(10))?"YES":"NO" ) << endl;			
-	b->display();
-	cout << "\n Show the final result in Diagram:\n";
-	b->printInOrder();
-	*/
+
 }
